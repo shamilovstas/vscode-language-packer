@@ -1,9 +1,19 @@
 {
-	"name": "packer",
+	"name": "packer-fmt",
 	"displayName": "Packer",
 	"description": "Packer configuration language support",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"icon": "icon.png",
+	"main": "./out/formatter.js",
+	"activationEvents": [
+		"onLanguage:packer",
+		"onLanguage:packervars"
+	],
+	"contributors": [
+		{
+			"name": "Anton Kulikov"
+		}
+	],
 	"categories": [
 		"Programming Languages"
 	],
@@ -12,22 +22,32 @@
 		"hashicorp",
 		"hcl"
 	],
-	"publisher": "4ops",
+	"publisher": "shamilovstas",
 	"author": {
-		"name": "Anton Kulikov"
+		"name": "Stanislav Shamilov"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/4ops/vscode-language-packer.git"
+		"url": "https://github.com/shamilovstas/vscode-language-packer.git"
 	},
 	"bugs": {
-		"url": "https://github.com/4ops/vscode-language-packer/issues"
+		"url": "https://github.com/shamilovstas/vscode-language-packer/issues"
 	},
 	"license": "MIT",
 	"engines": {
 		"vscode": "^1.42.0"
 	},
 	"contributes": {
+		"configuration": {
+			"title": "Packer",
+			"properties": {
+				"packer.path": {
+					"type": "string",
+					"default": "packer",
+					"description": "Path to the packer executable used for formatting."
+				}
+			}
+		},
 		"languages": [
 			{
 				"id": "packer",
@@ -66,23 +86,18 @@
 		]
 	},
 	"scripts": {
-		"ci-build": "vsce package",
-		"build": "vsce package",
 		"compile-packer": "js-yaml grammars/packer.yaml > grammars/packer.json",
 		"compile-packervars": "js-yaml grammars/packervars.yaml > grammars/packervars.json",
-		"compile": "npm run compile-packer && npm run compile-packervars",
-		"pretest": "npm run compile -s",
-		"prebuild": "npm test -s",
-		"preversion": "git add -A .",
-		"postversion": "npm run push -s",
-		"prepush": "git push",
-		"push": "git push --tags",
-		"postpush": "echo vsce publish",
-		"test": "echo No tests are implemented",
-		"version": "npm run build -s"
+		"compile": "npm run compile-packer && npm run compile-packervars && tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"package": "vsce package",
+		"vscode:prepublish": "npm run compile"
 	},
 	"devDependencies": {
+		"@types/node": "^26.6.4",
+		"@types/vscode": "~1.80.0",
+		"@vscode/vsce": "^4.0.0",
 		"js-yaml": "^5.4.3",
-		"vsce": "^1.99.0"
+		"typescript": "^7.0.2"
 	}
 }
