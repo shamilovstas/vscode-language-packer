@@ -68,8 +68,8 @@
 	"scripts": {
 		"ci-build": "vsce package",
 		"build": "vsce package",
-		"compile-packer": "yq eval grammars/packer.yaml --tojson > grammars/packer.json",
-		"compile-packervars": "yq eval grammars/packervars.yaml --tojson > grammars/packervars.json",
+		"compile-packer": "js-yaml grammars/packer.yaml > grammars/packer.json",
+		"compile-packervars": "js-yaml grammars/packervars.yaml > grammars/packervars.json",
 		"compile": "npm run compile-packer && npm run compile-packervars",
 		"pretest": "npm run compile -s",
 		"prebuild": "npm test -s",
@@ -82,7 +82,7 @@
 		"version": "npm run build -s"
 	},
 	"devDependencies": {
+		"js-yaml": "^5.4.3",
 		"vsce": "^1.99.0"
-	},
-	"dependencies": {}
+	}
 }
